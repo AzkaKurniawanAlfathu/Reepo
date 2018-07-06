@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>UAS</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <style>
+	tr,th{
+		padding: 30px;
+		transition: 300ms;
+	}
+	.tr1:hover{
+		background-color: pink;
+	}
+	.tr2:hover{
+		background-color: lightblue;
+	}
+	td{
+		padding: 20px;
+	}
+	table{
+		margin: auto;
+		box-shadow: 10px 10px 8px 10px #888888;
+	}
+	.right{
+		text-align: right;
+	}
+	.judul{
+		margin-bottom: 50px;
+	}
+  </style>
+</head>
+<body>
+	<div ng-app="myApp" ng-controller="myCtrl">
+			<div class="col-12 text-center judul">
+				<h1>{{title.main}}</h1>
+				<h2>{{title.sub}}</h2>
+			</div>
+			
+			<div class="container">
+				<table>
+					<tr>
+						<th>No</th>
+						<th>Name</th>
+						<th>Position</th>
+						<th>Start</th>
+						<th>Sallary</th>
+
+					</tr>
+					<tr ng-repeat="x in dat" class="tr1">
+						<td class="text-center">{{$index + 1}}</td>
+						<td>{{x.name}}</td>
+						<td>{{x.pos}}</td>
+						<td>{{x.start}}</td>
+						<td id="sall">US$ {{x.sallary}}</td>
+					</tr>
+					<tr class="tr2">
+						<td>Total</td>
+						<td class="right" id="output" colspan="4">US$ 0</td>
+					</tr>
+				</table>
+			</div>
+	</div>
+
+	<script>
+	var app = angular.module('myApp', []);
+	app.controller('myCtrl', function($scope, $http) {
+    $http.get("https://api.myjson.com/bins/8nts4")
+    .then(function(response) {
+        $scope.title = response.data.title;
+        $scope.dat = response.data.data;
+        var total = response.data.data.reduce((s, sal) => s + sal.sallary, 0);
+        document.getElementById('output').innerHTML = "US$ " + total;
+    	});
+	});
+	</script>
+</body>
+</html>
