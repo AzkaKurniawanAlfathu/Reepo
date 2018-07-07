@@ -53,7 +53,7 @@
 						<td>{{x.name}}</td>
 						<td>{{x.pos}}</td>
 						<td>{{x.start}}</td>
-						<td id="sall">US$ {{x.sallary}}</td>
+						<td id="sall">{{x.sallary | currency : US$ : 0}}</td>
 					</tr>
 					<tr class="tr2">
 						<td>Total</td>
@@ -71,7 +71,10 @@
         $scope.title = response.data.title;
         $scope.dat = response.data.data;
         var total = response.data.data.reduce((s, sal) => s + sal.sallary, 0);
-        document.getElementById('output').innerHTML = "US$ " + total;
+        var $injector = angular.injector(['ng']);
+		$filter = $injector.get("$filter");
+		var result = $filter('currency')(total, 'US$', 0);
+        document.getElementById('output').innerHTML = result;
     	});
 	});
 	</script>
